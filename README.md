@@ -1,49 +1,84 @@
-# JS-Core
-BCH - G1 - M2 - Programación avanzada en JavaScript
+# 📋 ProjectPulse - Desafío Final: Programación Avanzada en JavaScript
 
-# 📌 ProjectPulse - Solución Desafío Programación Avanzada en JavaScript
-
-Este repositorio contiene la solución al desafío final del módulo de **Programación Avanzada en JavaScript**.  
-El objetivo es implementar funcionalidades clave para "ProjectPulse", una plataforma de gestión de proyectos para equipos de desarrollo de software, simulando operaciones reales y utilizando conceptos avanzados del lenguaje.
+Este proyecto implementa una solución completa al desafío de **Programación Avanzada en JavaScript** para la plataforma ficticia **ProjectPulse** de la startup *TechFlow*. Aquí se desarrollan funcionalidades clave para la gestión de proyectos y tareas, análisis avanzado, simulación de asincronía y notificaciones en tiempo real, utilizando características modernas del lenguaje.
 
 ---
 
-## 📚 Descripción General
+## 🛠️ Tecnologías
 
-A través de este desafío se aplican conceptos de:
-- Estructuras de datos con objetos y arrays
-- Métodos funcionales (`map`, `filter`, `reduce`, `sort`)
+- JavaScript (ES6+)
+- Node.js (para ejecución local)
+- Programación orientada a objetos
 - Funciones de orden superior
-- Asincronía con `async/await` y `Promises`
-- Patrón de observador (notificaciones)
-
-Todo el código está escrito en un único archivo JavaScript, bien estructurado, comentado y con ejemplos de uso para cada funcionalidad implementada.
+- Asincronía con `async/await`
+- Patrón observador básico
 
 ---
 
-## ✅ Requerimientos Implementados
+## 🎯 Funcionalidades Implementadas
 
-### 1. 🧩 Gestión de Proyectos y Tareas (3 puntos)
-- Representación de proyectos con tareas.
-- Función para añadir tareas nuevas.
-- Resumen del estado de tareas con `map`, `filter`, `reduce`.
-- Ordenamiento de tareas por fecha límite (`sort`).
+### 1. Gestión de Proyectos y Tareas
 
-### 2. 🔍 Análisis Avanzado de Tareas (3 puntos)
-- `filtrarTareasProyecto(fn)`: función de orden superior.
-- `calcularTiempoRestante()`: días restantes usando `reduce`.
-- `obtenerTareasCriticas()`: tareas urgentes (< 3 días) no completadas.
+- **Estructura de clases `Project` y `Task`** para representar proyectos con su lista de tareas.
+- `addTask(task)`: Agrega una tarea al proyecto.
+- `getSummary()`: Devuelve un resumen con el número de tareas por estado (`pending`, `in progress`, `completed`).
+- `sortTasksByDeadline()`: Ordena las tareas del proyecto por fecha límite.
 
-### 3. 🔄 Sincronización y Tiempo Real (4 puntos)
-- `cargarDetallesProyecto()`: simulación API con `async/await`.
-- `actualizarEstadoTarea()`: actualización con manejo de errores.
-- `notificacionesTareas`: sistema de observadores para tareas completadas.
+### 2. Análisis Avanzado de Tareas
+
+- `filterProjectTasks(project, filterFn)`: Filtra tareas según una función personalizada.
+- `calculateRemainingTime(project)`: Calcula los días restantes para todas las tareas pendientes usando `reduce`.
+- `getCriticalTasks(project)`: Identifica tareas con menos de 3 días restantes que aún no están completadas.
+
+### 3. Simulación Asíncrona y Notificaciones
+
+- `loadProjectDetails(projectId)`: Simula carga de detalles desde una API usando `Promise`.
+- `updateTaskStatus(task, newStatus)`: Simula actualización del estado de una tarea con manejo de errores.
+- `TaskNotifications`: Sistema de notificaciones que permite suscribirse y ser alertado cuando una tarea se completa.
 
 ---
 
-## 🚀 Cómo Usar el Código
+## 🧪 Ejemplos de Uso
 
-1. Clona el repositorio:
-```bash
-git clone https://github.com/tuusuario/projectpulse-js-avanzado.git
-cd projectpulse-js-avanzado
+```js
+// Crear un nuevo proyecto
+const project1 = new Project(1, "ProjectPulse", "2024-11-10");
+
+// Crear y agregar tareas
+const task1 = new Task(1, "Definir alcance", "pending", "2024-11-15");
+const task2 = new Task(2, "Diseñar mockups", "in progress", "2024-11-12");
+const task3 = new Task(3, "Configurar ambiente", "pending", "2024-11-20");
+
+project1.addTask(task1);
+project1.addTask(task2);
+project1.addTask(task3);
+
+// Obtener resumen
+console.log(project1.getSummary());
+
+// Ordenar tareas por fecha límite
+console.log(project1.sortTasksByDeadline());
+
+// Filtrar tareas en progreso
+console.log(filterProjectTasks(project1, task => task.status === "in progress"));
+
+// Calcular días restantes
+console.log(calculateRemainingTime(project1));
+
+// Tareas críticas (< 3 días)
+console.log(getCriticalTasks(project1));
+
+// Simular carga de detalles
+loadProjectDetails(project1.id).then(console.log);
+
+// Simular actualización de estado
+updateTaskStatus(task1, "completed")
+  .then(console.log)
+  .catch(console.error);
+
+// Sistema de notificaciones
+const notifications = new TaskNotifications();
+notifications.subscribe(task => {
+  console.log(`🔔 Notificación: La tarea "${task.description}" ha sido completada.`);
+});
+notifications.notify(task1);
